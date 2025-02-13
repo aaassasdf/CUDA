@@ -30,3 +30,6 @@ This source file implements the functions declared in `read_MNIST.h`. It contain
 ### Dependencies
 - **CUDA Toolkit**: Ensure that the CUDA Toolkit is installed and configured on your system.
 - **MNIST Dataset**: Download the MNIST dataset files and place them in the appropriate directory as specified in the code.
+- **Operating System**: Ubuntu
+- **Compiler and standard**: linux-gcc-x64 using c17 and gnu++17 Standard
+- **IDE**: Visual Studio Code Insiders
