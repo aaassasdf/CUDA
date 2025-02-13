@@ -1,15 +1,29 @@
 #include <stdio.h>
 #include <cuda_runtime.h>
 #include <math.h>
+#include <read_MNIST.h>
+#include <read_MNIST.cpp>
 
+//define model parameters
+#define INPUT_SIZE IMAGE_SIZE
+#define HIDDEN_SIZE 512
+#define OUTPUT_SIZE 10
+#define DROPOUT_RATE 0.5
+#define LEARNING_RATE 0.01
+#define EPOCHS 10
+#define BATCH_SIZE 128
+
+// Sigmoid activation function
 __device__ float sigmoid(float x) {
     return 1.0f / (1.0f + expf(-x));
 }
 
+// Leaky ReLU activation function
 __device__ float leaky_relu(float x) {
     return x > 0.0f ? x : 0.01f * x;
 }
 
+// Forward hidden layer
 __global__ void forward_hidden_layer(float *input, float *weights, float *bias, float *output, int input_size, int output_size) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx < output_size) {
@@ -21,7 +35,32 @@ __global__ void forward_hidden_layer(float *input, float *weights, float *bias, 
     }
 }
 
+// Forward output layer
 __global__ void forward_output_layer(float *input, float *weights, float *bias, float *output, int input_size, int output_size) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx < output_size) {
+        float sum = 0.0f;
+        for (int i = 0; i < input_size; i++) {
+            sum += input[i] * weights[idx * input_size + i];
+        }
+        output[idx] = sum + bias[idx];
+    }
+}
+
+//Backward hidden layer
+__global__ void backward_hidden_layer(float *input, float *weights, float *bias, float *output, int input_size, int output_size) {
+    int idx = blockDim.x * blockIdx.x + threadIdx.x;
+    if (idx < output_size) {
+        float sum = 0.0f;
+        for (int i = 0; i < input_size; i++) {
+            sum += input[i] * weights[idx * input_size + i];
+        }
+        output[idx] = leaky_relu(sum + bias[idx]);
+    }
+}
+
+//Backward output layer
+__global__ void backward_output_layer(float *input, float *weights, float *bias, float *output, int input_size, int output_size) {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx < output_size) {
         float sum = 0.0f;
@@ -40,9 +79,9 @@ __global__ void vectorAdd(float *A, float *B, float *C, int N) {
 }
 
 int main() {
-    int input_size = 3;
-    int hidden_size = 4;
-    int output_size = 2;
+    int input_size = INPUT_SIZE;
+    int hidden_size = HIDDEN_SIZE;
+    int output_size = OUTPUT_SIZE;
 
     float h_input[] = {1.0f, 2.0f, 3.0f};
     float h_hidden_weights[] = {

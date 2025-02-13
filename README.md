@@ -24,8 +24,12 @@ This source file implements the functions declared in `read_MNIST.h`. It contain
 
 ### Usage
 1. **Compile the Code**: Use a CUDA-compatible compiler to compile the `neural_network.cu` and `read_MNIST.cpp` files.
+     **Example** nvcc -o neural_network neural_network.cu
+     while "-o" option can specify the output executable (.exe) file's name.
 2. **Run the Program**: Execute the compiled program to train the neural network on the MNIST dataset.
 3. **Evaluate the Results**: The program will output the training progress and evaluation metrics, such as accuracy on the test set.
+
+
 
 ### Dependencies
 - **CUDA Toolkit**: Ensure that the CUDA Toolkit is installed and configured on your system.

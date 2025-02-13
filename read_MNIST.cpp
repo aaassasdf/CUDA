@@ -1,14 +1,5 @@
 #include "read_MNIST.h"
 
-#define TRAINING_IMAGES "dataset/mnist/train-images-idx3-ubyte/train-images-idx3-ubyte"
-#define TRAINING_LABELS "dataset/mnist/train-labels-idx1-ubyte/train-labels-idx1-ubyte"
-#define TESTING_IMAGES "dataset/mnist/t10k-images-idx3-ubyte/t10k-images-idx3-ubyte"
-#define TESTING_LABELS "dataset/mnist/t10k-labels-idx1-ubyte/t10k-labels-idx1-ubyte"
-
-#define NUM_TRAINING_IMAGES 60000
-#define NUM_TESTING_IMAGES 10000
-#define IMAGE_SIZE 28 * 28
-
 
 unsigned char* read_ubyte_image(const char* filename, int* num_images, int* num_rows, int* num_cols) {
     FILE* file = fopen(filename, "rb");
