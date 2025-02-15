@@ -86,7 +86,7 @@ void flattern_image(unsigned char* images, int num_images, int num_rows, int num
     
 }
 
-int main() {
+void test_read_MNIST() {
     const char* train_images_filename = TRAINING_IMAGES;
     const char* train_labels_filename = TRAINING_LABELS;
     int num_images, num_rows, num_cols;
@@ -130,5 +130,4 @@ int main() {
     free(images);
     free(labels);
     free(flattern_images);
-    return 0;
 }

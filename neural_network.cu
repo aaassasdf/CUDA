@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <cuda_runtime.h>
 #include <math.h>
-#include <read_MNIST.h>
-#include <read_MNIST.cpp>
+#include "read_MNIST.h"
+#include "read_MNIST.cpp"
 
 //define model parameters
 #define INPUT_SIZE IMAGE_SIZE
